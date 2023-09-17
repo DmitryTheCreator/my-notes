@@ -2,6 +2,7 @@ import Router from 'express'
 const router = new Router()
 import UsersController from '../controllers/usersController.js'
 
+router.get('/:login', UsersController.getOne)
 router.get('/', UsersController.getAll)
 router.post('/', UsersController.createOne)
 router.patch('/:id/active', UsersController.changeActiveStatus)

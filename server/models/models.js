@@ -11,7 +11,7 @@ export const User = sequelize.define('user', {
 
 export const Note = sequelize.define('note', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  title: { type: DataTypes.STRING },
+  title: { type: DataTypes.STRING  },
   message: { type: DataTypes.STRING }
 });
 
