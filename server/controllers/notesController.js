@@ -13,4 +13,4 @@ class NotesController {
   }
 }
 
-module.exports = new NotesController()
+export default new NotesController()

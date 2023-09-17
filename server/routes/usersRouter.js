@@ -1,12 +1,11 @@
-const Router = require('express')
+import Router from 'express'
 const router = new Router()
-const UsersController = require('../controllers/usersController')
-const usersController = require('../controllers/usersController')
+import UsersController from '../controllers/usersController.js'
 
 router.get('/', UsersController.getAll)
 router.post('/', UsersController.createOne)
-router.patch('/:id/active', usersController.changeActiveStatus)
-router.patch('/:id/role', usersController.changeRole)
-router.delete('/:id', usersController.deleteOne)
+router.patch('/:id/active', UsersController.changeActiveStatus)
+router.patch('/:id/role', UsersController.changeRole)
+router.delete('/:id', UsersController.deleteOne)
 
-module.exports = router
+export default router
