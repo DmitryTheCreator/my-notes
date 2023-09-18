@@ -4,24 +4,25 @@ import ApiResponse from '../helpers/apiResponse.js';
 class NotesController {
   async getAll(req, res, next) {
     try {
-      const { userId } = req.query
+      const userId = req.user.id
       const notes = await Note.findAll({ where: { userId } })
-      if (!notes || notes.length === 0) {
+      if (!notes) {
         return next(ApiResponse.NotFound('Пользователя с таким id не существует', null));
       }
       return res.json(ApiResponse.OK('Список заметок успешно получен', notes))
-    } catch (error) {
-      return next(ApiResponse.BadRequest('Ошибка при получении списка заметок', null))
+    } catch(error) {
+      return next(ApiResponse.Forbidden(error.message, null))
     }
   }
 
   async createOne(req, res, next) {
     try {
-      const { title, message, userId } = req.body
+      const userId = req.user.id
+      const { title, message } = req.body
       const note = await Note.create({ title, message, userId })
       return res.json(ApiResponse.OK('Заметка успешно создана', note))
     } catch (error) {
-      return next(ApiResponse.BadRequest('Ошибка при создании заметки', null))
+      return next(ApiResponse.Forbidden(error.message, null))
     }
   }
 
@@ -42,7 +43,7 @@ class NotesController {
       await note.save();
       return res.json(ApiResponse.OK('Заметка успешно отредактирована', await note.reload()))
     } catch (error) {
-      return next(ApiResponse.BadRequest('Ошибка при редактировании заметки', null))
+      return next(ApiResponse.Forbidden(error.message, null))
     }
   }
 
@@ -56,7 +57,7 @@ class NotesController {
       }
       return res.json(ApiResponse.OK('Заметка успешно удалена', {}))
     } catch (error) {
-      return next(ApiResponse.BadRequest('Ошибка при удалении заметки', null)); 
+      return next(ApiResponse.Forbidden(error.message, null)); 
     }
   }
 }
