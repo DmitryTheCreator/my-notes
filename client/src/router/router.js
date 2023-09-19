@@ -6,7 +6,11 @@ import Users from '../pages/Users.vue'
 
 const routes = [
   {
-    path: '/',
+    path: "/",
+    redirect: "/notes",
+  },
+  {
+    path: '/login',
     component: Login 
   },
   {

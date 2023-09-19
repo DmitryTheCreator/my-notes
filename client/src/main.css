@@ -23,6 +23,14 @@
   font-size: 48px;
 }
 
+.big-36 {
+  font-size: 36px;
+}
+
+.big-24 {
+  font-size: 24px;
+}
+
 .normal {
   font-weight: normal;
 }
@@ -31,15 +39,15 @@
   font-weight: bold;
 }
 
-.bisque-b-color{
+.bisque-b-color {
   background-color: #E3D6C8;
 }
 
-.dust-b-color{
+.dust-b-color {
   background-color: #C4915E;
 }
 
-.brown-b-color{
+.brown-b-color {
   background-color: #76420C;
 }
 
