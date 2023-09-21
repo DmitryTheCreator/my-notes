@@ -7,18 +7,18 @@ import Users from '../pages/Users.vue'
 const routes = [
   {
     path: "/",
-    redirect: "/notes",
+    redirect: "/api/notes",
   },
   {
-    path: '/login',
+    path: '/api/login',
     component: Login 
   },
   {
-    path: '/notes',
+    path: '/api/notes',
     component: Notes 
   },
   {
-    path: '/users',
+    path: '/api/users',
     component: Users 
   }
 ]
