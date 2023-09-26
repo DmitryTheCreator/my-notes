@@ -1,5 +1,5 @@
 import { Note } from '../models/models.js'
-import ApiResponse from '../helpers/apiResponse.js';
+import ApiResponse from '../helpers/apiResponse.js'
 
 class NotesController {
   async getAll(req, res, next) {
@@ -7,7 +7,7 @@ class NotesController {
       const userId = req.user.id
       const notes = await Note.findAll({ where: { userId } })
       if (!notes) {
-        return next(ApiResponse.NotFound('Пользователя с таким id не существует', null));
+        return next(ApiResponse.NotFound('Пользователя с таким id не существует', null))
       }
       return res.json(ApiResponse.OK('Список заметок успешно получен', notes))
     } catch(error) {
@@ -27,8 +27,8 @@ class NotesController {
   }
 
   async editOne(req, res, next) {
-    const { id } = req.params
-    const { title, message } = req.body;
+    const { id } = req.query
+    const { title, message } = req.body
 
     try {
       const note = await Note.findOne({ where: { id } })
@@ -37,10 +37,10 @@ class NotesController {
         return next(ApiResponse.NotFound('Заметка не найдена', null))
       }
 
-      note.title = title || note.title;
-      note.message = message || note.message;
+      note.title = title || note.title
+      note.message = message || note.message
       
-      await note.save();
+      await note.save()
       return res.json(ApiResponse.OK('Заметка успешно отредактирована', await note.reload()))
     } catch (error) {
       return next(ApiResponse.Forbidden(error.message, null))
@@ -49,15 +49,15 @@ class NotesController {
 
   async deleteOne(req, res, next) {
     try {
-      const { id } = req.params;
-      const deletedRowCount = await Note.destroy({ where: { id } });
+      const { id } = req.query
+      const deletedRowCount = await Note.destroy({ where: { id } })
   
       if (deletedRowCount === 0) {
         return next(ApiResponse.NotFound('Заметка не найдена', null))
       }
-      return res.json(ApiResponse.OK('Заметка успешно удалена', {}))
+      return res.json(ApiResponse.OK('Заметка успешно удалена', { id }))
     } catch (error) {
-      return next(ApiResponse.Forbidden(error.message, null)); 
+      return next(ApiResponse.Forbidden(error.message, null))
     }
   }
 }

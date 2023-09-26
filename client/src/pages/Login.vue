@@ -104,7 +104,7 @@ export default {
     async function submit() {
       try {
         await login(form.login.value, form.password.value)
-        router.push('/api/users')
+        router.push('/api/notes')
       } catch (error) {
         showErrorBanner.value = true
       }

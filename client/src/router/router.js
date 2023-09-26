@@ -1,7 +1,8 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../pages/Login.vue'
 import Notes from '../pages/Notes.vue'
 import Users from '../pages/Users.vue' 
+import { isAuthenticated } from '../helpers/auth'
 
 
 const routes = [
@@ -15,7 +16,14 @@ const routes = [
   },
   {
     path: '/api/notes',
-    component: Notes 
+    component: Notes,
+    beforeEnter: (to, from, next) => {
+      if(!isAuthenticated()) {
+        next('/api/login')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/api/users',
@@ -28,4 +36,4 @@ const router = createRouter({
   history: createWebHistory()
 })
 
-export default router;
+export default router
