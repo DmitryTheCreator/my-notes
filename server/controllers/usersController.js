@@ -58,7 +58,7 @@ class UsersController {
 
   async changeActiveStatus(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
       const user = await findUserById(id);
       user.active = user.active === 'ACTIVATED' ? 'DEACTIVATED' : 'ACTIVATED';
       await user.save();
@@ -70,7 +70,7 @@ class UsersController {
 
   async changeRole(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
       const user = await findUserById(id);
       user.role = user.role === 'USER' ? 'ADMIN' : 'USER';
       await user.save();
@@ -82,7 +82,7 @@ class UsersController {
 
   async deleteOne(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
       const user = await findUserById(id);
       await User.destroy({ where: { id } });
       return res.json(ApiResponse.OK('Пользователь успешно удален', {}));
