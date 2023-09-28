@@ -13,10 +13,20 @@
         <Button 
           v-tooltip:top.tooltip="'Регистрация нового пользователя'"
           class="btn" 
-          @click="createNote"
+          @click="createUser"
         >
           <img width="40" height="40" src="/icons/plus.svg" />
         </Button>
+        <Dialog v-model:show="dialogVisible" class="dialog">
+          <Form 
+            formTitle="Регистрация"
+            formDesc=""
+            :formConfig="authFormConfig"
+            errorTitle="Пользователь с таким именем уже существует"
+            :action="action"
+            :redirect="registration"
+          />
+        </Dialog>
       </div>  
       <div class="py-4 stretch">
         <UserCard v-for="user in users" :key="user.id" :user="user" />
@@ -30,14 +40,52 @@ import { onMounted, ref } from 'vue'
 import Header from '../components/Header.vue'
 import Button from '../components/UI/Button.vue'
 import UserCard from '../components/UserCard.vue'
-import Tooltip from "../components/UI/Tooltip.vue";
+import Tooltip from "../components/UI/Tooltip.vue"
+import Dialog from '../components/UI/Dialog.vue';
+import Form from '../components/Form.vue'
 import { getUsers } from '../http/usersApi'
-import { login } from '../http/authApi' 
+import { registration } from '../http/usersApi' 
+
+const required = val => !!val
+const optimalLength = (min, max) => val => val.length >= min && val.length < max
 
 export default {
-  components: { Header, Button, UserCard, Tooltip },
+  components: { Header, Button, UserCard, Tooltip, Dialog, Form },
   setup() {
+    const authFormConfig = ref({
+      login: {
+        value: '',
+        type: 'email',
+        placeholder: 'Алексей',
+        validators: {
+          required
+        },
+        exception: 'Имя пользователя не должно быть пустым'
+      },
+      password: {
+        value: '',
+        type: 'password',
+        placeholder: 'admin12345',
+        validators: {   
+          required,
+          optimalLength: optimalLength(4, 30)
+        },
+        exception: 'Длина пароля должна быть от 4 до 30 символов'
+      }
+    })
+
+    const dialogVisible = ref(false)
+
+    const action = async () => {
+      dialogVisible.value = false
+    }
+
     const users = ref([])
+   
+
+    const createUser = () => {
+      dialogVisible.value = true
+    }
 
     onMounted(async () => {
       try {
@@ -54,7 +102,7 @@ export default {
       }
     })
 
-    return { users }
+    return { users, dialogVisible, createUser, authFormConfig, action, registration }
   }
 }
     
@@ -78,4 +126,6 @@ export default {
   display: flex;
   gap:20px
 }
+
+
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'explose': !showErrorBanner }" class="login-exception">
-    <h1><strong>Неверное имя пользователя или пароль</strong></h1> 
+    <h1><strong>{{ errorTitle }}</strong></h1> 
     <img @click="removeBanner" src="/icons/close.svg" width="12" height="12">
   </div>
 </template>
@@ -8,6 +8,7 @@
 <script>
 export default {
   props: {
+    errorTitle: String,
     showErrorBanner: Boolean
   },
   methods: {

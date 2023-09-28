@@ -14,7 +14,7 @@ async function findUserById(id) {
 class UsersController {
   async getOne(req, res, next) {
     try {
-      const { id } = req.params;
+      const { id } = req.body;
       const user = await findUserById(id);
       return res.json(ApiResponse.OK('Пользователь успешно получен', user));
     } catch (error) {

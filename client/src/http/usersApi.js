@@ -16,6 +16,6 @@ export const changeRole = async (id) => {
 }
 
 export const registration = async (login, password) => {
-  const response = await $authHost.post('api/users', {login, password, role: 'ADMIN'})
-  return response
+  const {data} = await $authHost.post('api/users', {login, password})
+  return data
 }
