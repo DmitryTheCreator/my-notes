@@ -53,7 +53,7 @@ export default {
       router.push('/api/notes')
     }
 
-    return { authFormConfig, formTitle, action, login }
+    return { authFormConfig, action, login }
   }
 }
 </script>

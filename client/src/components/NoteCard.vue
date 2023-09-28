@@ -1,6 +1,6 @@
 <template>
   <div class="note-card" :class="isNoteSelected ? 'selected' : 'default'">
-    <button class="delete-button" @click.prevent="confirmDelete">❌</button>
+    <button v-tooltip:left.tooltip="'Удалить заметку'" class="delete-button" @click.prevent="confirmDelete">❌</button>
     <h1 class="big-24 bold">{{ note.title }}</h1>
     <p>{{ note.message }}</p>
   </div>
@@ -9,11 +9,13 @@
 <script>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
+import Tooltip from './UI/Tooltip.vue'
 
 export default {
   props: {
     note: Object
   },
+  components: { Tooltip },
   setup(props) {
     const store = useStore()
 

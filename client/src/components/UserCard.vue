@@ -119,6 +119,7 @@ export default {
 .user-card {
   display: flex;
   width: 100%;
+  margin-top: 100px;
   height: 60px;
 }
 

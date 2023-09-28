@@ -2,7 +2,7 @@
   <div class="height header-indent">
     <Header />
     <div class="py-5 width container">
-      <div class="flex stretch py-4">
+      <div class="flex stretch">
         <b-form-input
           class="stretch"
           type="search"
@@ -29,7 +29,7 @@
           />
         </Dialog>
       </div>  
-      <div class="stretch scroll">
+      <div class="haha scroll">
         <UserCard v-for="user in users" :key="user.id" :user="user" :reload="loadUsers" />
       </div>
     </div>
@@ -126,7 +126,12 @@ export default {
 }
 
 .stretch {
+  width: 92.3%;
+}
+
+.haha {
   width: 100%;
+  padding: 20px 45px;
 }
 
 .btn {
@@ -136,11 +141,11 @@ export default {
 
 .flex {
   display: flex;
-  gap:20px
+  gap: 20px;
 }
 
 .scroll {
-  max-height: 74.6vh;
+  max-height: 79.8vh;
   overflow-y: auto; 
   overflow-x: hidden;
 }
