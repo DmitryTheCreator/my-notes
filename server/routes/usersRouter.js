@@ -10,6 +10,6 @@ router.post('/', [
 ], UsersController.registration)
 router.post('/active', UsersController.changeActiveStatus)
 router.post('/role', UsersController.changeRole)
-router.delete('/', UsersController.deleteOne)
+router.delete('/:id', UsersController.deleteOne)
 
 export default router

@@ -82,8 +82,7 @@ class UsersController {
 
   async deleteOne(req, res, next) {
     try {
-      const { id } = req.body;
-      const user = await findUserById(id);
+      const { id } = req.params;
       await User.destroy({ where: { id } });
       return res.json(ApiResponse.OK('Пользователь успешно удален', {}));
     } catch (error) {

@@ -1,14 +1,15 @@
 <template>
-  <div class="fullscreen header-indent">
+  <div class="height header-indent">
     <Header />
     <div class="py-5 width container">
-      <div class="flex stretch">
+      <div class="flex stretch py-4">
         <b-form-input
           class="stretch"
           type="search"
           size="lg"
-          v-model="text"
+          v-model="searchText"
           placeholder="Введите имя пользователя..."
+          @input="loadUsers"
         />
         <Button 
           v-tooltip:top.tooltip="'Регистрация нового пользователя'"
@@ -28,8 +29,8 @@
           />
         </Dialog>
       </div>  
-      <div class="py-4 stretch">
-        <UserCard v-for="user in users" :key="user.id" :user="user" />
+      <div class="stretch scroll">
+        <UserCard v-for="user in users" :key="user.id" :user="user" :reload="loadUsers" />
       </div>
     </div>
   </div>
@@ -78,8 +79,10 @@ export default {
 
     const action = async () => {
       dialogVisible.value = false
+      await loadUsers()
     }
-
+    
+    const searchText = ref('');
     const users = ref([])
    
 
@@ -87,28 +90,37 @@ export default {
       dialogVisible.value = true
     }
 
-    onMounted(async () => {
+    const loadUsers = async () => {
       try {
-        await getUsers()
-          .then(items => {
-            if (items.data.length > 0) {
-              users.value = items.data
-            } else {
-              alert('Список пользователей пуст.')
-            }
-          })
+        const items = await getUsers();
+        if (items.data.length > 0) {
+          const searchTextLower = searchText.value.toLowerCase()
+          users.value = items.data
+            .sort((a, b) => a.login.localeCompare(b.login))
+            .filter(user => user.login.toLowerCase().includes(searchTextLower))
+        } else {
+          alert('Список пользователей пуст.');
+        }
       } catch (error) {
         alert(`Ошибка при загрузке списка пользователей: ${error.message}`)
       }
-    })
+    }
 
-    return { users, dialogVisible, createUser, authFormConfig, action, registration }
+    onMounted(loadUsers)
+
+    return { users, dialogVisible, createUser, authFormConfig, action, registration, loadUsers, searchText }
   }
 }
     
 </script>
 
 <style scoped>
+
+.height {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .width {
   max-width: 1200px;
 }
@@ -127,5 +139,10 @@ export default {
   gap:20px
 }
 
+.scroll {
+  max-height: 74.6vh;
+  overflow-y: auto; 
+  overflow-x: hidden;
+}
 
 </style>

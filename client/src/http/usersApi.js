@@ -16,6 +16,11 @@ export const changeRole = async (id) => {
 }
 
 export const registration = async (login, password) => {
-  const {data} = await $authHost.post('api/users', {login, password})
+  const {data} = await $authHost.post('api/users', { login, password })
   return data
+}
+
+export const deleteUser = async (id) => {
+  const response = await $authHost.delete(`api/users/${id}`)
+  return response
 }

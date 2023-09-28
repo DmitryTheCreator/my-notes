@@ -28,6 +28,7 @@
     <div 
       v-tooltip:top.tooltip="'Удаление аккаунта'" 
       class="width-icon height d-flex red rounded-right"
+      @click="deleteUserAccount"
     >
       <img src="/icons/delete.svg"/>
     </div>
@@ -37,7 +38,7 @@
 <script>
 import { watch, ref } from 'vue'
 import Tooltip from '../components/UI/Tooltip.vue'
-import { changeActiveStatus, changeRole } from '../http/usersApi'
+import { changeActiveStatus, changeRole, deleteUser } from '../http/usersApi'
 import jwt_decode from 'jwt-decode'
 
 const checkId = (card_id) => {
@@ -47,7 +48,8 @@ const checkId = (card_id) => {
 
 export default {
   props: {
-    user: Object
+    user: Object,
+    reload: Function
   }, 
   components: { Tooltip },
   setup(props) {
@@ -61,8 +63,7 @@ export default {
           props.user.active = changedUser.data.active
         } else {
           alert('Активировать/Деактивировать свой аккаунт запрещено!')
-        }
-          
+        }        
       } catch (error) {
         alert(`Ошибка активации/деактивации аккаунта: ${error.message}`);
       }
@@ -82,6 +83,24 @@ export default {
       }
     }
 
+    const deleteUserAccount = async () => {
+      try {
+        if (!checkId(props.user.id)) {
+          console.log(props.user.id)
+          const isConfirmed = window.confirm(`Вы действительно хотите удалить пользователя ${props.user.login}?`)
+          if (isConfirmed) {
+            await deleteUser(props.user.id)
+            props.reload()
+          }
+        } else {
+          alert('Удалять свой аккаунт запрещено!')
+        }   
+      } catch (error) {
+        alert(`Ошибка удаления пользователя: ${error.message}`);
+        console.log(error);
+      }
+    }
+
     watch(() => props.user.active, () => {
       userActive.value = props.user.active
     })
@@ -91,7 +110,7 @@ export default {
     })
     
 
-    return { changeUserActive, userActive, changeUserRole, userRole }
+    return { changeUserActive, userActive, changeUserRole, userRole, deleteUserAccount }
   }
 }
 </script>
